@@ -1,10 +1,8 @@
 package com.Holidaymaker;
 
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Scanner;
 
 public class Client {
@@ -76,23 +74,38 @@ public class Client {
     }
 
     private void searchAvailableRooms() {
-        System.out.println("Check in date: YYYY-MM-DD");
-        String checkIn = input.nextLine();
-        LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
-        LocalDate juneFirst = LocalDate.of(2020, 6, 1);
+        System.out.println("Summer season 01 June to 31 of July");
 
-        if (checkInDate.isAfter(juneFirst)) {
-            System.out.println("correct");
-        }
-        else{
-            System.out.println("try again");
-        }
 
+        String checkIn = controlCheckInDate();
         System.out.println("Check out date: YYYY-MM-DD");
         String checkOut = input.nextLine();
+        LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
+        LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
+        if (checkOutDate.isBefore(endOfSeason)) {
+            System.out.println("Try again, check out date too late");
+        }
+
         sqlConsole.searchAvailableRooms(checkIn, checkOut);
         sqlConsole.printAvailableRooms();
         System.out.println(" ");
+    }
+
+    private String controlCheckInDate() {
+        
+        while (true) {
+            System.out.println("Check in date: YYYY-MM-DD");
+            String checkIn = input.nextLine();
+            LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
+            LocalDate startOfSeason = LocalDate.of(2020, 6, 1);
+            if (checkInDate.isBefore(startOfSeason)) {
+                System.out.println("Try again, check in date too early");
+            } else {
+                return checkIn;
+            }
+        }
+
+
     }
 
 }
