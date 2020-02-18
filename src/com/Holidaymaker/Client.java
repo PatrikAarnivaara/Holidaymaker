@@ -22,11 +22,11 @@ public class Client {
             System.out.println("  1.  Register guest account");
             System.out.println("  2.  Search available rooms");
             System.out.println("  3.  Book room");
-            System.out.println("  4.  Update booking");
+            System.out.println("  4.  Change booking");
             System.out.println("  5.  Cancel booking");
-            System.out.println("  6.  Uppdate guest information");
+            System.out.println("  6.  Update guest information");
             System.out.println("  7.  Logout");
-            System.out.println("------------------------------");
+            System.out.println("*-----------------------------*");
 
             String option = input.nextLine();
 
