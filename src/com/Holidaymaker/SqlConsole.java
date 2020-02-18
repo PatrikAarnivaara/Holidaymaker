@@ -37,23 +37,27 @@ public class SqlConsole {
         }
     }
 
+    //String checkInDate, String checkOutDate
+    //WHERE check_in > ? AND check_out < ?
 
-    void searchGuestByFirstName(String firstName) {
+    void searchAvailableRooms(String checkInDate, String checkOutDate) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM travelers WHERE first_name LIKE ?");
-            statement.setString(1, firstName);
+            statement = conn.prepareStatement("SELECT * FROM hotels");
+            statement.setString(1, checkInDate);
+            statement.setString(2, checkOutDate);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void printSearchResult() {
+
+    public void printAvailableRooms() {
         try {
             while (resultSet.next()) {
-                String row = "traveller_id: " + resultSet.getString("traveller_id")
-                        + ", First name: " + resultSet.getString("first_name")
-                        + ", Last name: " + resultSet.getString("last_name");
+                String row = "Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city");
+                        //+ ", Available rooms: " + resultSet.getString("room_id");
                 System.out.println(row);
             }
         } catch (Exception ex) {

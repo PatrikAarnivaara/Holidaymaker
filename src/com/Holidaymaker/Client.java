@@ -1,6 +1,10 @@
 package com.Holidaymaker;
 
 
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Scanner;
 
 public class Client {
@@ -35,7 +39,7 @@ public class Client {
                     registerGuest();
                     break;
                 case "2":
-                    //registreraBil();
+                    searchAvailableRooms();
                     break;
                 case "3":
                     //bestallKorning();
@@ -69,6 +73,26 @@ public class Client {
         System.out.println("E-mail: ");
         String eMail = input.nextLine();
         sqlConsole.registerGuestAccount(firstName, lastName, eMail);
+    }
+
+    private void searchAvailableRooms() {
+        System.out.println("Check in date: YYYY-MM-DD");
+        String checkIn = input.nextLine();
+        LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
+        LocalDate juneFirst = LocalDate.of(2020, 6, 1);
+
+        if (checkInDate.isAfter(juneFirst)) {
+            System.out.println("correct");
+        }
+        else{
+            System.out.println("try again");
+        }
+
+        System.out.println("Check out date: YYYY-MM-DD");
+        String checkOut = input.nextLine();
+        sqlConsole.searchAvailableRooms(checkIn, checkOut);
+        sqlConsole.printAvailableRooms();
+        System.out.println(" ");
     }
 
 }
