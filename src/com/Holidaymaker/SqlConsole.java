@@ -27,7 +27,7 @@ public class SqlConsole {
 
     void registerGuestAccount(String firstName, String lastName, String eMail) {
         try {
-            statement = conn.prepareStatement("INSERT INTO guest SET guest_firstname = ?, guest_lastname = ?, guest_email = ?");
+            statement = conn.prepareStatement("INSERT INTO guests SET guest_first_name = ?, guest_last_name = ?, guest_email = ?");
             statement.setString(1, firstName);
             statement.setString(2, lastName);
             statement.setString(3, eMail);

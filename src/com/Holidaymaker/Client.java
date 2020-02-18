@@ -18,14 +18,14 @@ public class Client {
 
         while (booking) {
 
-            System.out.println("Options: ");
+            System.out.println("*- Côte d'Azur Travel Agency -*");
             System.out.println("  1.  Register guest account");
-            System.out.println("  2.  Registrera en bil");
-            System.out.println("  3.  Beställ en körning");
-            System.out.println("  4.  Hitta en användare");
-            System.out.println("  5.  Avregistrera bil");
-            System.out.println("  6.  Uppdatera användarnamn");
-            System.out.println("  7.  Avsluta");
+            System.out.println("  2.  Search available rooms");
+            System.out.println("  3.  Book room");
+            System.out.println("  4.  Update booking");
+            System.out.println("  5.  Cancel booking");
+            System.out.println("  6.  Uppdate guest information");
+            System.out.println("  7.  Logout");
             System.out.println("------------------------------");
 
             String option = input.nextLine();
