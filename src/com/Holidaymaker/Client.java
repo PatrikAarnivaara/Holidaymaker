@@ -75,24 +75,17 @@ public class Client {
 
     private void searchAvailableRooms() {
         System.out.println("Summer season 01 June to 31 of July");
-
-
         String checkIn = controlCheckInDate();
-        System.out.println("Check out date: YYYY-MM-DD");
-        String checkOut = input.nextLine();
-        LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
-        LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
-        if (checkOutDate.isBefore(endOfSeason)) {
-            System.out.println("Try again, check out date too late");
-        }
-
+        String checkOut = controlCheckOutDate();
         sqlConsole.searchAvailableRooms(checkIn, checkOut);
         sqlConsole.printAvailableRooms();
         System.out.println(" ");
     }
 
+
+
     private String controlCheckInDate() {
-        
+
         while (true) {
             System.out.println("Check in date: YYYY-MM-DD");
             String checkIn = input.nextLine();
@@ -105,6 +98,22 @@ public class Client {
             }
         }
 
+
+    }
+
+    private String controlCheckOutDate() {
+
+        while (true) {
+            System.out.println("Check out date: YYYY-MM-DD");
+            String checkOut = input.nextLine();
+            LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
+            LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
+            if (checkOutDate.isAfter(endOfSeason)) {
+                System.out.println("Try again, check out date too late");
+            } else {
+                return checkOut;
+            }
+        }
 
     }
 

@@ -13,6 +13,7 @@ public class SqlConsole {
 
     public SqlConsole() {
         connect();
+        //testPrint();
     }
 
     private void connect() {
@@ -42,7 +43,7 @@ public class SqlConsole {
 
     void searchAvailableRooms(String checkInDate, String checkOutDate) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM hotels");
+            statement = conn.prepareStatement("SELECT * FROM booked_rooms_all WHERE check_out <= ? OR check_in >= ?");
             statement.setString(1, checkInDate);
             statement.setString(2, checkOutDate);
             resultSet = statement.executeQuery();
@@ -55,14 +56,40 @@ public class SqlConsole {
     public void printAvailableRooms() {
         try {
             while (resultSet.next()) {
-                String row = "Hotel: " + resultSet.getString("hotel_name")
-                        + ", City: " + resultSet.getString("hotel_city");
-                        //+ ", Available rooms: " + resultSet.getString("room_id");
+                String row = "Room id: " + resultSet.getString("room_id")
+                        + ", Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city")
+                        + ", Room type: " + resultSet.getString("type")
+                        + ", Price: " + resultSet.getDouble("price");
                 System.out.println(row);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void testPrint(){
+
+        try {
+            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms");
+            resultSet = statement.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            while (resultSet.next()) {
+                String row = "Room id: " + resultSet.getString("room_id")
+                        + ", Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city")
+                        + ", Room type: " + resultSet.getString("type")
+                        + ", Price: " + resultSet.getDouble("price");
+                System.out.println(row);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 }
