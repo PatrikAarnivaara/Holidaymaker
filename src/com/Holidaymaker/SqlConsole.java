@@ -38,14 +38,17 @@ public class SqlConsole {
         }
     }
 
-    //String checkInDate, String checkOutDate
-    //WHERE check_in > ? AND check_out < ?
 
-    void searchAvailableRooms(String checkInDate, String checkOutDate) {
+    void searchAvailableRooms(int pool, int restaurant, int childrenActivities, int entertainment, String checkOutDate, String checkInDate) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM booked_rooms_all WHERE check_out <= ? OR check_in >= ?");
-            statement.setString(1, checkInDate);
-            statement.setString(2, checkOutDate);
+            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+                    "AND children_activities = ? AND entertainment = ? HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+            statement.setInt(1, pool);
+            statement.setInt(2, restaurant);
+            statement.setInt(3, childrenActivities);
+            statement.setInt(4, entertainment);
+            statement.setString(5, checkOutDate);
+            statement.setString(6, checkInDate);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,28 +71,6 @@ public class SqlConsole {
         }
     }
 
-    public void testPrint(){
 
-        try {
-            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms");
-            resultSet = statement.executeQuery();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            while (resultSet.next()) {
-                String row = "Room id: " + resultSet.getString("room_id")
-                        + ", Hotel: " + resultSet.getString("hotel_name")
-                        + ", City: " + resultSet.getString("hotel_city")
-                        + ", Room type: " + resultSet.getString("type")
-                        + ", Price: " + resultSet.getDouble("price");
-                System.out.println(row);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
 
 }
