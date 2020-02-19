@@ -13,6 +13,7 @@ public class SqlConsole {
 
     public SqlConsole() {
         connect();
+        //testPrint();
     }
 
     private void connect() {
@@ -38,27 +39,38 @@ public class SqlConsole {
     }
 
 
-    void searchGuestByFirstName(String firstName) {
+    void searchAvailableRooms(int pool, int restaurant, int childrenActivities, int entertainment, String checkOutDate, String checkInDate) {
         try {
-            statement = conn.prepareStatement("SELECT * FROM travelers WHERE first_name LIKE ?");
-            statement.setString(1, firstName);
+            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+                    "AND children_activities = ? AND entertainment = ? HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+            statement.setInt(1, pool);
+            statement.setInt(2, restaurant);
+            statement.setInt(3, childrenActivities);
+            statement.setInt(4, entertainment);
+            statement.setString(5, checkOutDate);
+            statement.setString(6, checkInDate);
             resultSet = statement.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void printSearchResult() {
+
+    public void printAvailableRooms() {
         try {
             while (resultSet.next()) {
-                String row = "traveller_id: " + resultSet.getString("traveller_id")
-                        + ", First name: " + resultSet.getString("first_name")
-                        + ", Last name: " + resultSet.getString("last_name");
+                String row = "Room id: " + resultSet.getString("room_id")
+                        + ", Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city")
+                        + ", Room type: " + resultSet.getString("type")
+                        + ", Price: " + resultSet.getDouble("price");
                 System.out.println(row);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+
 
 }
