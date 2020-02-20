@@ -1,14 +1,12 @@
 package com.Holidaymaker;
 
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Client {
 
     Scanner input = new Scanner(System.in);
     private SqlConsole sqlConsole = new SqlConsole();
+    private InputControll inputControll = new InputControll();
 
     public Client() {
         adminMenu();
@@ -38,7 +36,9 @@ public class Client {
                     searchAndBookAvailableRooms();
                     break;
                 case "3":
-                    changeBooking();
+                    System.out.println("Enter booking id");
+                    int bookingId = Integer.parseInt(input.nextLine());
+                    changeBooking(bookingId);
                     break;
                 case "4":
                     sqlConsole.cancelBooking(deleteBooking());
@@ -67,11 +67,11 @@ public class Client {
     private void searchAndBookAvailableRooms() {
         //Dates
         System.out.println("Summer season 01 June to 31 of July");
-        String checkIn = controlCheckInDate();
-        String checkOut = controlCheckOutDate();
+        String checkIn = inputControll.controlCheckInDate();
+        String checkOut = inputControll.controlCheckOutDate();
 
         //Facilities
-        int numberOfGuests = controlNumberOfGuestsNotZero();
+        int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
         System.out.println("Pool: 1/0 ");
         int pool = Integer.parseInt(input.nextLine());
         System.out.println("Restaurant: 1/0 ");
@@ -98,28 +98,36 @@ public class Client {
         //, int roomId
     }
 
-    private void changeBooking() {
+    private void changeBooking(int bookingId) {
 
         boolean updating = true;
 
         while (updating) {
+
             System.out.println("Choose option to update:");
             System.out.println("  1.  Check-in date:");
             System.out.println("  2.  Check-out date:");
             System.out.println("  3.  Number of guests: ");
             System.out.println("  4.  Close menu ");
+            System.out.println("*-----------------------------*");
 
             String option = input.nextLine();
 
             switch (option) {
                 case "1":
-                    registerGuest();
+                    System.out.println("Check in date: YYYY-MM-DD");
+                    String checkIn = input.nextLine();
+                    sqlConsole.updateCheckInDate(checkIn, bookingId);
                     break;
                 case "2":
-                    searchAndBookAvailableRooms();
+                    System.out.println("Check out date: YYYY-MM-DD");
+                    String checkOut = input.nextLine();
+                    sqlConsole.updateCheckOutDate(checkOut, bookingId);
                     break;
                 case "3":
-                    changeBooking();
+                    System.out.println("Number of guests: ");
+                    int numberOfGuests = Integer.parseInt(input.nextLine());
+                    sqlConsole.updateNumberOfGuests(numberOfGuests, bookingId);
                     break;
                 case "4":
                     updating = false;
@@ -135,52 +143,5 @@ public class Client {
         System.out.println("Cancel booking with id: ");
         return Integer.parseInt(input.nextLine());
     }
-
-    private int controlNumberOfGuestsNotZero() {
-        while (true) {
-            System.out.println("Number of guests: ");
-            int numberOfGuestsCheck = Integer.parseInt(input.nextLine());
-            if (numberOfGuestsCheck < 1) {
-                System.out.println("Try again, guests can't be 0");
-            } else {
-                return numberOfGuestsCheck;
-            }
-        }
-    }
-
-
-    private String controlCheckInDate() {
-
-        while (true) {
-            System.out.println("Check in date: YYYY-MM-DD");
-            String checkIn = input.nextLine();
-            LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
-            LocalDate startOfSeason = LocalDate.of(2020, 6, 1);
-            if (checkInDate.isBefore(startOfSeason)) {
-                System.out.println("Try again, check in date too early");
-            } else {
-                return checkIn;
-            }
-        }
-
-
-    }
-
-    private String controlCheckOutDate() {
-
-        while (true) {
-            System.out.println("Check out date: YYYY-MM-DD");
-            String checkOut = input.nextLine();
-            LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
-            LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
-            if (checkOutDate.isAfter(endOfSeason)) {
-                System.out.println("Try again, check out date too late");
-            } else {
-                return checkOut;
-            }
-        }
-
-    }
-
 
 }

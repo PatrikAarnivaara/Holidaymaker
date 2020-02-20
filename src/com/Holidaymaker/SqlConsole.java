@@ -81,9 +81,39 @@ public class SqlConsole {
 
     }
 
-    public void updateBooking(){
-
+    public void updateCheckInDate(String newCheckInDate, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET check_in = ? WHERE booking_id = ?");
+            statement.setString(1, newCheckInDate);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
+
+    public void updateCheckOutDate(String newCheckOutDate, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET check_out = ? WHERE booking_id = ?");
+            statement.setString(1, newCheckOutDate);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateNumberOfGuests(int newAmountOfGuests, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET number_of_guests = ? WHERE booking_id = ?");
+            statement.setInt(1, newAmountOfGuests);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public void cancelBooking(int bookingId) {
 
