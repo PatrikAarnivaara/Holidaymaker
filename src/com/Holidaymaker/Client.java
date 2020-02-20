@@ -22,12 +22,10 @@ public class Client {
 
             System.out.println("*- Côte d'Azur Travel Agency -*");
             System.out.println("  1.  Register guest account");
-            System.out.println("  2.  Search available rooms");
-            System.out.println("  3.  Book room");
-            System.out.println("  4.  Change booking");
-            System.out.println("  5.  Cancel booking");
-            System.out.println("  6.  Update guest information");
-            System.out.println("  7.  Logout");
+            System.out.println("  2.  Search and book available rooms");
+            System.out.println("  3.  Change booking");
+            System.out.println("  4.  Cancel booking");
+            System.out.println("  5.  Logout");
             System.out.println("*-----------------------------*");
 
             String option = input.nextLine();
@@ -40,20 +38,12 @@ public class Client {
                     searchAvailableRooms();
                     break;
                 case "3":
-                    //bestallKorning();
-                    //sqlConsole.printBestallning();
+                    //changeBooking();
                     break;
                 case "4":
-                    //sqlConsole.visaStartDatum();
-                    //hittaAnvandare();
+                    sqlConsole.cancelBooking(deleteBooking());
                     break;
                 case "5":
-                    //avregistreraBil();
-                    break;
-                case "6":
-                    //uppdateraNamn();
-                    break;
-                case "7":
                     booking = false;
                     break;
                 default:
@@ -62,6 +52,8 @@ public class Client {
             }
         }
     }
+
+
 
     private void registerGuest() {
         System.out.println("First name: ");
@@ -77,6 +69,7 @@ public class Client {
         System.out.println("Summer season 01 June to 31 of July");
         String checkIn = controlCheckInDate();
         String checkOut = controlCheckOutDate();
+
         int numberOfGuests = controlNumberOfGuestsNotZero();
         System.out.println("Pool: 1/0 ");
         int pool = Integer.parseInt(input.nextLine());
@@ -86,8 +79,11 @@ public class Client {
         int childrenActivities = Integer.parseInt(input.nextLine());
         System.out.println("Entertainment: 1/0 ");
         int entertainment = Integer.parseInt(input.nextLine());
+
         sqlConsole.searchAvailableRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
+        System.out.println("Book room on these dates and number of guests?");
+        //sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guest_id);
         System.out.println(" ");
     }
 
@@ -135,6 +131,11 @@ public class Client {
             }
         }
 
+    }
+
+    private int deleteBooking() {
+            System.out.println("Cancel booking with id: ");
+            return Integer.parseInt(input.nextLine());
     }
 
 }

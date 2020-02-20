@@ -39,7 +39,7 @@ public class SqlConsole {
 
 
     void searchAvailableRooms(int numberOfGuests, int pool, int restaurant, int childrenActivities, int entertainment, String checkOutDate, String checkInDate) {
-
+        //add field for room type?
         if (numberOfGuests == 1) {
             try {
                 statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
@@ -85,6 +85,29 @@ public class SqlConsole {
         }
     }
 
+    public void bookRoom() {
+        //room_id, guest_id, dates, extras
+    }
+
+    public void cancelBooking(int bookingId) {
+
+        try {
+            statement = conn.prepareStatement("DELETE FROM bookings WHERE booking_id = ?");
+            statement.setInt(1, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            statement = conn.prepareStatement("DELETE FROM bookingsXrooms WHERE booking_id = ?");
+            statement.setInt(1, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
     public void printAvailableRooms() {
         try {
