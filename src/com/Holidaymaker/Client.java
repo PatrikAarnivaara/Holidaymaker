@@ -80,9 +80,9 @@ public class Client {
         int childrenActivities = Integer.parseInt(input.nextLine());
         System.out.println("Entertainment: 1/0 ");
         int entertainment = Integer.parseInt(input.nextLine());
-        System.out.println("Max distance to beach: ");
+        System.out.println("Max distance to beach (in meters): ");
         int distanceToBeach = Integer.parseInt(input.nextLine());
-        System.out.println("Max distance to centre: ");
+        System.out.println("Max distance to centre (in meters): ");
         int distanceToCentre = Integer.parseInt(input.nextLine());
 
         sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
@@ -91,10 +91,10 @@ public class Client {
         //Create new method for booking section
         //Book - room
         System.out.println("Choose room number to book on chosen dates.");
+        System.out.println("Guest id: ");
         int guestId = Integer.parseInt(input.nextLine());
         System.out.println("Room id: ");
         int roomId = Integer.parseInt(input.nextLine());
-        System.out.println("Guest id: ");
 
         //Book - extras
         System.out.println("Meals: none/half_board/full_board");

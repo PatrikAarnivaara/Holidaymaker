@@ -63,25 +63,49 @@ public class SqlConsole {
     public void bookRoom(String checkInDate, String checkOutDate, int numberOfGuests, int roomId, int guestId, String meal, int extraBed) {
 
         try {
-            statement = conn.prepareStatement("INSERT INTO bookings SET check_in = ?, check_out = ?, number_of_guests = ?, guest_id = ?");
+            statement = conn.prepareStatement("INSERT INTO bookings SET check_in = ?, check_out = ?, number_of_guests = ?, guest_id = ?", statement.RETURN_GENERATED_KEYS);
             statement.setString(1, checkInDate);
             statement.setString(2, checkOutDate);
             statement.setInt(3, numberOfGuests);
             statement.setInt(4, guestId);
             statement.executeUpdate();
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            int generatedKey = (int) generatedKeys.getFloat("GENERATED_KEY");
+
+            statement = conn.prepareStatement("INSERT INTO bookingsXrooms SET booking_id ?, room_id = ?, meal = ?, extra_bed = ?");
+            statement.setInt(1, generatedKey);
+            statement.setInt(2, roomId);
+            statement.setString(3, meal);
+            statement.setInt(4, extraBed);
+            statement.executeUpdate();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        try {
-            statement = conn.prepareStatement("INSERT INTO bookingsXrooms SET room_id = ?, meal = ?, extra_bed = ?");
-            statement.setInt(1, roomId);
-            statement.setString(2, meal);
-            statement.setInt(3, extraBed);
-            statement.executeUpdate();
+
+
+       /* try {
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        }*/
+
+        /*Query (insert)
+        Lägg till 2-åriga Jennifer i tabellen users
+
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("INSERT INTO users VALUES(null, 'Jennifer', 2)");
+        Samma igen, men denna gång vill vi få tag på det auto-incrementade ID:t usern fick.
+
+                Statement stmt = conn.createStatement();
+        stmt.executeUpdate("INSERT INTO users VALUES(null, 'Jennifer', 2)", Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                System.out.println(generatedKeys.getLong("GENERATED_KEY"))*/
 
 
     }
