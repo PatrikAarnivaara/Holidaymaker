@@ -77,6 +77,7 @@ public class Client {
         System.out.println("Summer season 01 June to 31 of July");
         String checkIn = controlCheckInDate();
         String checkOut = controlCheckOutDate();
+        int numberOfGuests = controlNumberOfGuestsNotZero();
         System.out.println("Pool: 1/0 ");
         int pool = Integer.parseInt(input.nextLine());
         System.out.println("Restaurant: 1/0 ");
@@ -85,9 +86,21 @@ public class Client {
         int childrenActivities = Integer.parseInt(input.nextLine());
         System.out.println("Entertainment: 1/0 ");
         int entertainment = Integer.parseInt(input.nextLine());
-        sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, checkOut, checkIn);
+        sqlConsole.searchAvailableRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
         System.out.println(" ");
+    }
+
+    private int controlNumberOfGuestsNotZero() {
+        while (true) {
+            System.out.println("Number of guests: ");
+            int numberOfGuestsCheck = Integer.parseInt(input.nextLine());
+            if (numberOfGuestsCheck < 1) {
+                System.out.println("Try again, guests can't be 0");
+            } else {
+                return numberOfGuestsCheck;
+            }
+        }
     }
 
 

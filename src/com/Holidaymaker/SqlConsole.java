@@ -13,7 +13,6 @@ public class SqlConsole {
 
     public SqlConsole() {
         connect();
-        //testPrint();
     }
 
     private void connect() {
@@ -39,19 +38,50 @@ public class SqlConsole {
     }
 
 
-    void searchAvailableRooms(int pool, int restaurant, int childrenActivities, int entertainment, String checkOutDate, String checkInDate) {
-        try {
-            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
-                    "AND children_activities = ? AND entertainment = ? HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
-            statement.setInt(1, pool);
-            statement.setInt(2, restaurant);
-            statement.setInt(3, childrenActivities);
-            statement.setInt(4, entertainment);
-            statement.setString(5, checkOutDate);
-            statement.setString(6, checkInDate);
-            resultSet = statement.executeQuery();
-        } catch (Exception e) {
-            e.printStackTrace();
+    void searchAvailableRooms(int numberOfGuests, int pool, int restaurant, int childrenActivities, int entertainment, String checkOutDate, String checkInDate) {
+
+        if (numberOfGuests == 1) {
+            try {
+                statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+                        "AND children_activities = ? AND entertainment = ? AND type = 'single' HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+                statement.setInt(1, pool);
+                statement.setInt(2, restaurant);
+                statement.setInt(3, childrenActivities);
+                statement.setInt(4, entertainment);
+                statement.setString(5, checkOutDate);
+                statement.setString(6, checkInDate);
+                resultSet = statement.executeQuery();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (numberOfGuests == 2 || numberOfGuests == 3) {
+            try {
+                statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+                        "AND children_activities = ? AND entertainment = ? AND type = 'double' HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+                statement.setInt(1, pool);
+                statement.setInt(2, restaurant);
+                statement.setInt(3, childrenActivities);
+                statement.setInt(4, entertainment);
+                statement.setString(5, checkOutDate);
+                statement.setString(6, checkInDate);
+                resultSet = statement.executeQuery();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (numberOfGuests > 3) {
+            try {
+                statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+                        "AND children_activities = ? AND entertainment = ? AND type = 'suite' HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+                statement.setInt(1, pool);
+                statement.setInt(2, restaurant);
+                statement.setInt(3, childrenActivities);
+                statement.setInt(4, entertainment);
+                statement.setString(5, checkOutDate);
+                statement.setString(6, checkInDate);
+                resultSet = statement.executeQuery();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -70,7 +100,6 @@ public class SqlConsole {
             ex.printStackTrace();
         }
     }
-
 
 
 }
