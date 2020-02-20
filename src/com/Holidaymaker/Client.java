@@ -80,22 +80,29 @@ public class Client {
         int childrenActivities = Integer.parseInt(input.nextLine());
         System.out.println("Entertainment: 1/0 ");
         int entertainment = Integer.parseInt(input.nextLine());
-        sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, checkOut, checkIn);
+        System.out.println("Max distance to beach: ");
+        int distanceToBeach = Integer.parseInt(input.nextLine());
+        System.out.println("Max distance to centre: ");
+        int distanceToCentre = Integer.parseInt(input.nextLine());
+
+        sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
 
-        //Book
-        System.out.println("Book room on chosen dates.");
-        /*System.out.println("Meals: none/half_board/full_board");
+        //Create new method for booking section
+        //Book - room
+        System.out.println("Choose room number to book on chosen dates.");
+        int guestId = Integer.parseInt(input.nextLine());
+        System.out.println("Room id: ");
+        int roomId = Integer.parseInt(input.nextLine());
+        System.out.println("Guest id: ");
+
+        //Book - extras
+        System.out.println("Meals: none/half_board/full_board");
         String meal = input.nextLine();
         System.out.println("Extra bed: 1/0 ");
-        int extraBed = Integer.parseInt(input.nextLine());*/
-        System.out.println("Guest id: ");
-        int guestId = Integer.parseInt(input.nextLine());
-        //System.out.println("Room id: ");
-        //int roomId = Integer.parseInt(input.nextLine());
-        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guestId);
+        int extraBed = Integer.parseInt(input.nextLine());
+        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, roomId, guestId, meal, extraBed);
         System.out.println(" ");
-        //, int roomId
     }
 
     private void changeBooking(int bookingId) {
