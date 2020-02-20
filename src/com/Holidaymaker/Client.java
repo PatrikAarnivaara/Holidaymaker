@@ -1,14 +1,12 @@
 package com.Holidaymaker;
 
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Client {
 
     Scanner input = new Scanner(System.in);
     private SqlConsole sqlConsole = new SqlConsole();
+    private InputControll inputControll = new InputControll();
 
     public Client() {
         adminMenu();
@@ -22,12 +20,10 @@ public class Client {
 
             System.out.println("*- Côte d'Azur Travel Agency -*");
             System.out.println("  1.  Register guest account");
-            System.out.println("  2.  Search available rooms");
-            System.out.println("  3.  Book room");
-            System.out.println("  4.  Change booking");
-            System.out.println("  5.  Cancel booking");
-            System.out.println("  6.  Update guest information");
-            System.out.println("  7.  Logout");
+            System.out.println("  2.  Search and book available rooms");
+            System.out.println("  3.  Change booking");
+            System.out.println("  4.  Cancel booking");
+            System.out.println("  5.  Logout");
             System.out.println("*-----------------------------*");
 
             String option = input.nextLine();
@@ -37,23 +33,17 @@ public class Client {
                     registerGuest();
                     break;
                 case "2":
-                    searchAvailableRooms();
+                    searchAndBookAvailableRooms();
                     break;
                 case "3":
-                    //bestallKorning();
-                    //sqlConsole.printBestallning();
+                    System.out.println("Enter booking id");
+                    int bookingId = Integer.parseInt(input.nextLine());
+                    changeBooking(bookingId);
                     break;
                 case "4":
-                    //sqlConsole.visaStartDatum();
-                    //hittaAnvandare();
+                    sqlConsole.cancelBooking(deleteBooking());
                     break;
                 case "5":
-                    //avregistreraBil();
-                    break;
-                case "6":
-                    //uppdateraNamn();
-                    break;
-                case "7":
                     booking = false;
                     break;
                 default:
@@ -62,6 +52,7 @@ public class Client {
             }
         }
     }
+
 
     private void registerGuest() {
         System.out.println("First name: ");
@@ -73,10 +64,14 @@ public class Client {
         sqlConsole.registerGuestAccount(firstName, lastName, eMail);
     }
 
-    private void searchAvailableRooms() {
+    private void searchAndBookAvailableRooms() {
+        //Dates
         System.out.println("Summer season 01 June to 31 of July");
-        String checkIn = controlCheckInDate();
-        String checkOut = controlCheckOutDate();
+        String checkIn = inputControll.controlCheckInDate();
+        String checkOut = inputControll.controlCheckOutDate();
+
+        //Facilities
+        int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
         System.out.println("Pool: 1/0 ");
         int pool = Integer.parseInt(input.nextLine());
         System.out.println("Restaurant: 1/0 ");
@@ -87,41 +82,66 @@ public class Client {
         int entertainment = Integer.parseInt(input.nextLine());
         sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
+
+        //Book
+        System.out.println("Book room on chosen dates.");
+        /*System.out.println("Meals: none/half_board/full_board");
+        String meal = input.nextLine();
+        System.out.println("Extra bed: 1/0 ");
+        int extraBed = Integer.parseInt(input.nextLine());*/
+        System.out.println("Guest id: ");
+        int guestId = Integer.parseInt(input.nextLine());
+        //System.out.println("Room id: ");
+        //int roomId = Integer.parseInt(input.nextLine());
+        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guestId);
         System.out.println(" ");
+        //, int roomId
     }
 
+    private void changeBooking(int bookingId) {
 
-    private String controlCheckInDate() {
+        boolean updating = true;
 
-        while (true) {
-            System.out.println("Check in date: YYYY-MM-DD");
-            String checkIn = input.nextLine();
-            LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
-            LocalDate startOfSeason = LocalDate.of(2020, 6, 1);
-            if (checkInDate.isBefore(startOfSeason)) {
-                System.out.println("Try again, check in date too early");
-            } else {
-                return checkIn;
+        while (updating) {
+
+            System.out.println("Choose option to update:");
+            System.out.println("  1.  Check-in date:");
+            System.out.println("  2.  Check-out date:");
+            System.out.println("  3.  Number of guests: ");
+            System.out.println("  4.  Close menu ");
+            System.out.println("*-----------------------------*");
+
+            String option = input.nextLine();
+
+            switch (option) {
+                case "1":
+                    System.out.println("Check in date: YYYY-MM-DD");
+                    String checkIn = input.nextLine();
+                    sqlConsole.updateCheckInDate(checkIn, bookingId);
+                    break;
+                case "2":
+                    System.out.println("Check out date: YYYY-MM-DD");
+                    String checkOut = input.nextLine();
+                    sqlConsole.updateCheckOutDate(checkOut, bookingId);
+                    break;
+                case "3":
+                    System.out.println("Number of guests: ");
+                    int numberOfGuests = Integer.parseInt(input.nextLine());
+                    sqlConsole.updateNumberOfGuests(numberOfGuests, bookingId);
+                    break;
+                case "4":
+                    updating = false;
+                    break;
+                default:
+                    System.out.println("No option found");
+                    break;
             }
         }
-
-
     }
 
-    private String controlCheckOutDate() {
-
-        while (true) {
-            System.out.println("Check out date: YYYY-MM-DD");
-            String checkOut = input.nextLine();
-            LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
-            LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
-            if (checkOutDate.isAfter(endOfSeason)) {
-                System.out.println("Try again, check out date too late");
-            } else {
-                return checkOut;
-            }
-        }
-
+    private int deleteBooking() {
+        System.out.println("Cancel booking with id: ");
+        return Integer.parseInt(input.nextLine());
     }
 
 }

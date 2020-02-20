@@ -13,7 +13,6 @@ public class SqlConsole {
 
     public SqlConsole() {
         connect();
-        //testPrint();
     }
 
     private void connect() {
@@ -53,8 +52,80 @@ public class SqlConsole {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
+    public void bookRoom(String checkInDate, String checkOutDate,  int numberOfGuests, int guestId) {
+        //String meal, int extraBed, int roomId
+        try {
+            statement = conn.prepareStatement("INSERT INTO bookings SET check_in = ?, check_out = ?, number_of_guests = ?, guest_id = ?");
+            statement.setString(1, checkInDate);
+            statement.setString(2, checkOutDate);
+            statement.setInt(3, numberOfGuests);
+            statement.setInt(4, guestId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        /*try {
+            statement = conn.prepareStatement("INSERT INTO bookingsXrooms SET room_id = ?, meal = ?, extra_bed = ?");
+            statement.setInt(1, roomId);
+            statement.setString(2, meal);
+            statement.setInt(3, extraBed);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
+
+
+    }
+
+    public void updateCheckInDate(String newCheckInDate, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET check_in = ? WHERE booking_id = ?");
+            statement.setString(1, newCheckInDate);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateCheckOutDate(String newCheckOutDate, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET check_out = ? WHERE booking_id = ?");
+            statement.setString(1, newCheckOutDate);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateNumberOfGuests(int newAmountOfGuests, int bookingId){
+        try {
+            statement = conn.prepareStatement("UPDATE bookings SET number_of_guests = ? WHERE booking_id = ?");
+            statement.setInt(1, newAmountOfGuests);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public void cancelBooking(int bookingId) {
+
+        try {
+            statement = conn.prepareStatement("DELETE FROM bookings WHERE booking_id = ?");
+            statement.setInt(1, bookingId);
+            statement.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
     public void printAvailableRooms() {
         try {
@@ -70,7 +141,6 @@ public class SqlConsole {
             ex.printStackTrace();
         }
     }
-
 
 
 }
