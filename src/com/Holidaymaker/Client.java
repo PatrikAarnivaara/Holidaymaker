@@ -1,5 +1,6 @@
 package com.Holidaymaker;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Client {
@@ -8,11 +9,11 @@ public class Client {
     private SqlConsole sqlConsole = new SqlConsole();
     private InputControll inputControll = new InputControll();
 
-    public Client() {
+    public Client() throws SQLException {
         adminMenu();
     }
 
-    public void adminMenu() {
+    public void adminMenu() throws SQLException {
 
         boolean booking = true;
 
@@ -101,7 +102,7 @@ public class Client {
         String meal = input.nextLine();
         System.out.println("Extra bed: 1/0 ");
         int extraBed = Integer.parseInt(input.nextLine());
-        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, roomId, guestId, meal, extraBed);
+        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests ,roomId, guestId, meal, extraBed);
         System.out.println(" ");
     }
 
