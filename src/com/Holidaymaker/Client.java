@@ -71,7 +71,6 @@ public class Client {
         String checkOut = inputControll.controlCheckOutDate();
         String checkIn = inputControll.controlCheckInDate();
 
-
         //Facilities
         int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
         System.out.println("Pool: 1/0 ");
@@ -87,19 +86,18 @@ public class Client {
         System.out.println("Max distance to centre (in meters): ");
         int distanceToCentre = Integer.parseInt(input.nextLine());
 
-        sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
+        sqlConsole.searchAvailableRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
-
-        sqlConsole.showAllUnbookedHotelRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre);
+        sqlConsole.showAllUnbookedHotelRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre);
         sqlConsole.printAvailableRooms();
 
         //Create new method for booking section
         //Book - room
         System.out.println("Choose room number to book on chosen dates.");
-        System.out.println("Guest id: ");
-        int guestId = Integer.parseInt(input.nextLine());
         System.out.println("Room id: ");
         int roomId = Integer.parseInt(input.nextLine());
+        System.out.println("Guest id: ");
+        int guestId = Integer.parseInt(input.nextLine());
 
         //Book - extras
         System.out.println("Meals: none/half_board/full_board");
