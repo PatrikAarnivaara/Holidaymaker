@@ -68,8 +68,9 @@ public class Client {
     private void searchAndBookAvailableRooms() {
         //Dates
         System.out.println("Summer season 01 June to 31 of July");
-        String checkIn = inputControll.controlCheckInDate();
         String checkOut = inputControll.controlCheckOutDate();
+        String checkIn = inputControll.controlCheckInDate();
+
 
         //Facilities
         int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
@@ -89,6 +90,9 @@ public class Client {
         sqlConsole.searchAvailableRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
         sqlConsole.printAvailableRooms();
 
+        sqlConsole.showAllUnbookedHotelRooms(pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre);
+        sqlConsole.printAvailableRooms();
+
         //Create new method for booking section
         //Book - room
         System.out.println("Choose room number to book on chosen dates.");
@@ -102,7 +106,7 @@ public class Client {
         String meal = input.nextLine();
         System.out.println("Extra bed: 1/0 ");
         int extraBed = Integer.parseInt(input.nextLine());
-        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests ,roomId, guestId, meal, extraBed);
+        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guestId, roomId, meal, extraBed);
         System.out.println(" ");
     }
 

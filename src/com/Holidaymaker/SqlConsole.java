@@ -1,6 +1,7 @@
 package com.Holidaymaker;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class SqlConsole {
 
@@ -11,7 +12,6 @@ public class SqlConsole {
     public SqlConsole() {
         connect();
         System.out.println(getLatestBookingId());
-
     }
 
     private void connect() {
@@ -40,10 +40,15 @@ public class SqlConsole {
 
     void searchAvailableRooms(int pool, int restaurant, int childrenActivities, int entertainment, int distanceToBeach, int distanceToCentre, String checkOutDate, String checkInDate) {
 
+
+
         try {
-            statement = conn.prepareStatement("SELECT * FROM all_hotel_rooms_booked_and_unbooked WHERE pool = ? AND restaurant = ? " +
+            
+            statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE pool = ? AND restaurant = ? " +
                     "AND children_activities = ? AND entertainment = ? AND distance_to_beach < ? " +
-                    "AND distance_to_centre < ?  HAVING check_in IS NULL OR check_out <= ? OR check_in >= ?");
+                    "AND distance_to_centre < ? AND type = 'single' HAVING check_out <= ? OR check_in >= ?");
+
+
             statement.setInt(1, pool);
             statement.setInt(2, restaurant);
             statement.setInt(3, childrenActivities);
@@ -59,7 +64,38 @@ public class SqlConsole {
 
     }
 
-    public void bookRoom(String checkInDate, String checkOutDate, int numberOfGuests, int roomId, int guestId, String meal, int extraBed) {
+
+    public void showAllUnbookedHotelRooms(int pool, int restaurant, int childrenActivities, int entertainment, int distanceToBeach, int distanceToCentre) {
+        try {
+            statement = conn.prepareStatement("SELECT * FROM all_unbooked_hotel_rooms WHERE pool = ? AND restaurant = ? " +
+                    "AND children_activities = ? AND entertainment = ? AND distance_to_beach < ? " +
+                    "AND distance_to_centre < ?");
+            statement.setInt(1, pool);
+            statement.setInt(2, restaurant);
+            statement.setInt(3, childrenActivities);
+            statement.setInt(4, entertainment);
+            statement.setInt(5, distanceToBeach);
+            statement.setInt(6, distanceToCentre);
+            resultSet = statement.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            while (resultSet.next()) {
+                String row = "Room id: " + resultSet.getString("room_id")
+                        + ", Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city")
+                        + ", Room type: " + resultSet.getString("type")
+                        + ", Price: " + resultSet.getDouble("price");
+                System.out.println(row);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void bookRoom(String checkInDate, String checkOutDate, int numberOfGuests, int guestId, int roomId, String meal, int extraBed) {
 
         try {
             statement = conn.prepareStatement("INSERT INTO bookings SET check_in = ?, check_out = ?, number_of_guests = ?, guest_id = ?");
@@ -68,8 +104,6 @@ public class SqlConsole {
             statement.setInt(3, numberOfGuests);
             statement.setInt(4, guestId);
             statement.executeUpdate();
-
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

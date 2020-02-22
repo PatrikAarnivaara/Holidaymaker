@@ -24,7 +24,7 @@ public class InputControll {
     public String controlCheckInDate() {
 
         while (true) {
-            System.out.println("Check in date: YYYY-MM-DD");
+            System.out.println("Check out date: YYYY-MM-DD");
             String checkIn = input.nextLine();
             LocalDate checkInDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkIn));
             LocalDate startOfSeason = LocalDate.of(2020, 6, 1);
@@ -41,7 +41,7 @@ public class InputControll {
     public String controlCheckOutDate() {
 
         while (true) {
-            System.out.println("Check out date: YYYY-MM-DD");
+            System.out.println("Check in date: YYYY-MM-DD");
             String checkOut = input.nextLine();
             LocalDate checkOutDate = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(checkOut));
             LocalDate endOfSeason = LocalDate.of(2020, 7, 31);
