@@ -255,7 +255,19 @@ public class SqlConsole {
 
     }
 
-    public void printAvailableRooms() {
+    public void getBooking(int bookingId){
+        try {
+            statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE booking_id = ?");
+            statement.setInt(1, bookingId);
+            resultSet = statement.executeQuery();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+
+    public void printAvailableRooms() throws SQLException {
 
         try {
             while (resultSet.next()) {
@@ -265,13 +277,32 @@ public class SqlConsole {
                         + ", Room type: " + resultSet.getString("type")
                         + ", Price: " + resultSet.getDouble("price");
                 System.out.println(row);
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+
     }
 
+    /*public boolean printUnBookedRooms() throws SQLException {
 
+        if (!resultSet.next()) {
+            System.out.println("No available rooms.");
+            return false;
+        } else {
+            while (resultSet.next()) {
+                String row = "Room id: " + resultSet.getString("room_id")
+                        + ", Hotel: " + resultSet.getString("hotel_name")
+                        + ", City: " + resultSet.getString("hotel_city")
+                        + ", Room type: " + resultSet.getString("type")
+                        + ", Price: " + resultSet.getDouble("price");
+                System.out.println(row);
+            }
+            return true;
+        }
+    }*/
 
 
 }
