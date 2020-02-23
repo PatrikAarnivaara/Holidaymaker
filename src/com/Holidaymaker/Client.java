@@ -65,50 +65,83 @@ public class Client {
         sqlConsole.registerGuestAccount(firstName, lastName, eMail);
     }
 
-    private void searchAndBookAvailableRooms() {
-        //Dates
-        System.out.println("Summer season 01 June to 31 of July");
-        String checkOut = inputControll.controlCheckOutDate();
-        String checkIn = inputControll.controlCheckInDate();
+    private void searchAndBookAvailableRooms() throws SQLException {
 
-        //Facilities
-        int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
-        System.out.println("Pool: 1/0 ");
-        int pool = Integer.parseInt(input.nextLine());
-        System.out.println("Restaurant: 1/0 ");
-        int restaurant = Integer.parseInt(input.nextLine());
-        System.out.println("Children activities: 1/0 ");
-        int childrenActivities = Integer.parseInt(input.nextLine());
-        System.out.println("Entertainment: 1/0 ");
-        int entertainment = Integer.parseInt(input.nextLine());
-        System.out.println("Max distance to beach (in meters): ");
-        int distanceToBeach = Integer.parseInt(input.nextLine());
-        System.out.println("Max distance to centre (in meters): ");
-        int distanceToCentre = Integer.parseInt(input.nextLine());
+        boolean searching = true;
+        boolean addingRooms = true;
+        boolean addOrNot = true;
 
-        sqlConsole.searchAvailableRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
-        sqlConsole.printAvailableRooms();
-        sqlConsole.showAllUnbookedHotelRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre);
-        sqlConsole.printAvailableRooms();
+        while (searching) {
+            //Dates
+            System.out.println("Summer season 01 June to 31 of July");
+            String checkOut = inputControll.controlCheckOutDate();
+            String checkIn = inputControll.controlCheckInDate();
 
-        //Create new method for booking section
-        //Book - room
-        System.out.println("Choose room number to book on chosen dates.");
-        System.out.println("Room id: ");
-        int roomId = Integer.parseInt(input.nextLine());
-        System.out.println("Guest id: ");
-        int guestId = Integer.parseInt(input.nextLine());
+            //Facilities
+            int numberOfGuests = inputControll.controlNumberOfGuestsNotZero();
+            System.out.println("Pool: 1/0 ");
+            int pool = Integer.parseInt(input.nextLine());
+            System.out.println("Restaurant: 1/0 ");
+            int restaurant = Integer.parseInt(input.nextLine());
+            System.out.println("Children activities: 1/0 ");
+            int childrenActivities = Integer.parseInt(input.nextLine());
+            System.out.println("Entertainment: 1/0 ");
+            int entertainment = Integer.parseInt(input.nextLine());
+            System.out.println("Max distance to beach (in meters): ");
+            int distanceToBeach = Integer.parseInt(input.nextLine());
+            System.out.println("Max distance to centre (in meters): ");
+            int distanceToCentre = Integer.parseInt(input.nextLine());
 
-        //Book - extras
-        System.out.println("Meals: none/half_board/full_board");
-        String meal = input.nextLine();
-        System.out.println("Extra bed: 1/0 ");
-        int extraBed = Integer.parseInt(input.nextLine());
-        sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guestId, roomId, meal, extraBed);
-        System.out.println(" ");
+            sqlConsole.searchAvailableRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre, checkOut, checkIn);
+            sqlConsole.printAvailableRooms();
+            sqlConsole.showAllUnbookedHotelRooms(numberOfGuests, pool, restaurant, childrenActivities, entertainment, distanceToBeach, distanceToCentre);
+            sqlConsole.printAvailableRooms();
+
+            System.out.println("Book room or do a new search? y/n");
+            String answer = input.nextLine();
+
+            if (answer.equals("y")) {
+                //Book - room
+                System.out.println("Guest id: ");
+                int guestId = Integer.parseInt(input.nextLine());
+                sqlConsole.booking(checkOut, checkIn, numberOfGuests, guestId);
+
+                while (addingRooms) {
+                    //Book - extras
+                    System.out.println("Choose room id to make a booking for chosen dates.");
+                    System.out.println("Room id: ");
+                    int roomId = Integer.parseInt(input.nextLine());
+                    System.out.println("Meals: none/half_board/full_board");
+                    String meal = input.nextLine();
+                    System.out.println("Extra bed: 1/0 ");
+                    int extraBed = Integer.parseInt(input.nextLine());
+                    sqlConsole.addBookingToBookingsXRooms(roomId, meal, extraBed);
+                    System.out.println("Would you like to add an additional room y/n? ");
+                    String option = input.nextLine();
+                    while (addOrNot) {
+                        if (option.equals("y")) {
+                            System.out.println(" ");
+                            addOrNot = false;
+                        } else {
+                            addOrNot = false;
+                            addingRooms = false;
+                        }
+
+                    }
+                }
+            } else {
+                searching = false;
+            }
+
+        }
+
     }
 
-    private void changeBooking(int bookingId) {
+    private void changeBooking(int bookingId) throws SQLException {
+
+        sqlConsole.getBooking(bookingId);
+        sqlConsole.printAvailableRooms();
+        System.out.println(" ");
 
         boolean updating = true;
 
