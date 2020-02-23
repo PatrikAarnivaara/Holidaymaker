@@ -122,12 +122,11 @@ public class Client {
                         if (option.equals("y")) {
                             System.out.println(" ");
                             addOrNot = false;
-                        } else if (option.equals("n")) {
+                        } else {
                             addOrNot = false;
-                            searching = false;
                             addingRooms = false;
-
                         }
+
                     }
                 }
             } else {
