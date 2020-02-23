@@ -44,7 +44,7 @@ public class SqlConsole {
             try {
                 statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE pool = ? AND restaurant = ? " +
                         "AND children_activities = ? AND entertainment = ? AND distance_to_beach < ? " +
-                        "AND distance_to_centre < ? AND type = 'single' HAVING check_out <= ? OR check_in >= ?");
+                        "AND distance_to_centre < ? AND type = 'single' AND check_out <= ? OR check_in >= ? ");
                 statement.setInt(1, pool);
                 statement.setInt(2, restaurant);
                 statement.setInt(3, childrenActivities);
@@ -55,14 +55,14 @@ public class SqlConsole {
                 statement.setString(8, checkInDate);
                 resultSet = statement.executeQuery();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         } else if (numberOfGuests > 1 && numberOfGuests <= 3) {
             try {
                 statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE pool = ? AND restaurant = ? " +
                         "AND children_activities = ? AND entertainment = ? AND distance_to_beach < ? " +
-                        "AND distance_to_centre < ? AND type = 'double' HAVING check_out <= ? OR check_in >= ?");
+                        "AND distance_to_centre < ? AND type = 'double' AND check_out <= ? OR check_in >= ? ");
                 statement.setInt(1, pool);
                 statement.setInt(2, restaurant);
                 statement.setInt(3, childrenActivities);
@@ -74,14 +74,14 @@ public class SqlConsole {
                 resultSet = statement.executeQuery();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         } else {
             try {
                 statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE pool = ? AND restaurant = ? " +
                         "AND children_activities = ? AND entertainment = ? AND distance_to_beach < ? " +
-                        "AND distance_to_centre < ? AND type = 'suite' HAVING check_out <= ? OR check_in >= ?");
+                        "AND distance_to_centre < ? AND type = 'suite' AND check_out <= ? OR check_in >= ? ");
                 statement.setInt(1, pool);
                 statement.setInt(2, restaurant);
                 statement.setInt(3, childrenActivities);
@@ -92,7 +92,8 @@ public class SqlConsole {
                 statement.setString(8, checkInDate);
                 resultSet = statement.executeQuery();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+
             }
 
         }
@@ -159,7 +160,7 @@ public class SqlConsole {
 
     }
 
-    public void bookRoom(String checkInDate, String checkOutDate, int numberOfGuests, int guestId, int roomId, String meal, int extraBed) {
+    public void booking(String checkInDate, String checkOutDate, int numberOfGuests, int guestId) {
 
         try {
             statement = conn.prepareStatement("INSERT INTO bookings SET check_in = ?, check_out = ?, number_of_guests = ?, guest_id = ?");
@@ -172,7 +173,9 @@ public class SqlConsole {
             ex.printStackTrace();
         }
 
+    }
 
+    public void addBookingToBookingsXRooms(int roomId, String meal, int extraBed) {
         try {
             int bookingId = getLatestBookingId();
             statement = conn.prepareStatement("INSERT INTO bookingsXrooms SET booking_id = ?, room_id = ?, meal = ?, extra_bed = ?");
@@ -255,7 +258,7 @@ public class SqlConsole {
 
     }
 
-    public void getBooking(int bookingId){
+    public void getBooking(int bookingId) {
         try {
             statement = conn.prepareStatement("SELECT * FROM all_booked_hotel_rooms WHERE booking_id = ?");
             statement.setInt(1, bookingId);
@@ -267,7 +270,7 @@ public class SqlConsole {
     }
 
 
-    public void printAvailableRooms() throws SQLException {
+    public void printAvailableRooms() {
 
         try {
             while (resultSet.next()) {
@@ -284,14 +287,11 @@ public class SqlConsole {
         }
 
 
+
     }
+    /*public void printUnbookedRooms() {
 
-    /*public boolean printUnBookedRooms() throws SQLException {
-
-        if (!resultSet.next()) {
-            System.out.println("No available rooms.");
-            return false;
-        } else {
+        try {
             while (resultSet.next()) {
                 String row = "Room id: " + resultSet.getString("room_id")
                         + ", Hotel: " + resultSet.getString("hotel_name")
@@ -299,10 +299,14 @@ public class SqlConsole {
                         + ", Room type: " + resultSet.getString("type")
                         + ", Price: " + resultSet.getDouble("price");
                 System.out.println(row);
+
             }
-            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
+
     }*/
-
-
 }
+
+

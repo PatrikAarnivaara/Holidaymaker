@@ -68,6 +68,8 @@ public class Client {
     private void searchAndBookAvailableRooms() throws SQLException {
 
         boolean searching = true;
+        boolean addingRooms = true;
+        boolean addOrNot = true;
 
         while (searching) {
             //Dates
@@ -97,23 +99,37 @@ public class Client {
 
             System.out.println("Book room or do a new search? y/n");
             String answer = input.nextLine();
-            if (answer.equals("y")) {
 
+            if (answer.equals("y")) {
                 //Book - room
-                System.out.println("Choose room number to book on chosen dates.");
-                System.out.println("Room id: ");
-                int roomId = Integer.parseInt(input.nextLine());
                 System.out.println("Guest id: ");
                 int guestId = Integer.parseInt(input.nextLine());
+                sqlConsole.booking(checkOut, checkIn, numberOfGuests, guestId);
 
-                //Book - extras
-                System.out.println("Meals: none/half_board/full_board");
-                String meal = input.nextLine();
-                System.out.println("Extra bed: 1/0 ");
-                int extraBed = Integer.parseInt(input.nextLine());
-                sqlConsole.bookRoom(checkIn, checkOut, numberOfGuests, guestId, roomId, meal, extraBed);
-                System.out.println(" ");
-                //}
+                while (addingRooms) {
+                    //Book - extras
+                    System.out.println("Choose room id to make a booking for chosen dates.");
+                    System.out.println("Room id: ");
+                    int roomId = Integer.parseInt(input.nextLine());
+                    System.out.println("Meals: none/half_board/full_board");
+                    String meal = input.nextLine();
+                    System.out.println("Extra bed: 1/0 ");
+                    int extraBed = Integer.parseInt(input.nextLine());
+                    sqlConsole.addBookingToBookingsXRooms(roomId, meal, extraBed);
+                    System.out.println("Would you like to add an additional room y/n? ");
+                    String option = input.nextLine();
+                    while (addOrNot) {
+                        if (option.equals("y")) {
+                            System.out.println(" ");
+                            addOrNot = false;
+                        } else if (option.equals("n")) {
+                            addOrNot = false;
+                            searching = false;
+                            addingRooms = false;
+
+                        }
+                    }
+                }
             } else {
                 searching = false;
             }
