@@ -16,7 +16,7 @@ Individual exercise connecting Java back end to MySQL database in console.
 * Read and post to database
 
 ## Status
-Project is:_finished_but needs to be improved_
+Project is: _finished but needs to be improved_
 
 ## Contact
 Created by Patrik Aarnivaara - feel free to contact me!
